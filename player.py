@@ -22,5 +22,15 @@ class Player:
     def setCurrentPoints(self, currentPoints):
         self.__currentPoints = currentPoints
 
+    def addPointsToCurrentPoints(self, points):
+        self.__currentPoints = self.__currentPoints + points
+
     def getCurrentPoints(self):
         return self.__currentPoints
+
+    def addCurrentPointstoSavedPoints(self):
+        self.__savedPoints = self.__savedPoints + self.__currentPoints
+        self.__currentPoints = 0
+
+    def resetCurrentPoints(self):
+        self.__currentPoints = 0

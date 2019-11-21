@@ -9,43 +9,45 @@ class GameState:
         self.__round = 0
         self.startGame()
 
+    def checkInput(self, message, checkList):
+        running = True
+        returnStatement = False
+        while running:
+            check = input(message)
+            for i in range(0, len(checkList)):
+                try:
+                    if int(check) == checkList[i]:
+                        return check
+                    else:
+                        returnStatement = True
+                except:
+                    returnStatement = True
+            if returnStatement:
+                print("That wasn't right.")
+
+    def decideMaxPoints(self):
+        if int(self.__difficulty) == 1:
+            self.__maxPoints = 50
+        else:
+            self.__maxPoints = 100
+
+    def decidePlayerNames(self):
+        for i in range(1, int(self.__amountOfPlayers) + 1):
+            playerName = input("enter the name of player " + str(i) + ": ")
+            self.__players.append(player.Player(playerName))
+            while self.__players[(i - 1)].getName() == '':
+                playerName = input("enter the name of player " + str(i) + ": ")
+                self.__players[i-1] = player.Player(playerName)
+
     def startGame(self):
         print("********************************************")
         print("Welcome to GAME OF PIG")
         print("********************************************")
         print("To start the game, please set up the game:\n")
-        running = True
-        while running:
-            difficulty = input("Please choose the mode of the game: '1': Beginners '2': Advanced ---  ")
-            try:
-                if int(difficulty) == 1 or int(difficulty) == 2:
-                    self.__difficulty = difficulty
-                    running = False
-                else:
-                    print("That wasnt right.")
-            except:
-                print("That wasnt right.")
-
-        amountPlayerCheck = [2, 3, 4, 5, 6]
-        running = True
-        while running:
-            amountOfPlayers = input("Please enter the number of players (2-6): ")
-            for i in amountPlayerCheck:
-                try:
-                    if int(amountOfPlayers) == i:
-                        self.__amountOfPlayers = int(amountOfPlayers)
-                        running = False
-                except:
-                    print("That wasnt right.")
-                    break
-        if int(difficulty) == 1:
-            self.__maxPoints = 50
-        else:
-            self.__maxPoints = 100
-
-        for i in range(1, self.__amountOfPlayers + 1):
-            playerName = input("enter the name of player " + str(i) + ": ")
-            self.__players.append(player.Player(playerName))
+        self.__difficulty = self.checkInput("Please choose the mode of the game: '1': Beginners '2': Advanced ---  ", [1, 2])
+        self.decideMaxPoints()
+        self.__amountOfPlayers = self.checkInput("Please enter the number of players (2-6): ", [2, 3, 4, 5, 6])
+        self.decidePlayerNames()
         self.startRound()
 
     def startRound(self):
